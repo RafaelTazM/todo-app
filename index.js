@@ -1,16 +1,32 @@
 const express = require("express")
 const exphbs = require("express-handlebars")
 const mysql = require("mysql2")
+
 const app = express()
+
 app.engine('handlebars', exphbs.engine())
 app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))
+
 app.use(express.urlencoded({
     extended:true
 }))
 
 app.use(express.json())
+
+
+app.get('/limpartarefas', (requisicao, resposta) => {
+    const sql = 'DELETE FROM tarefas'
+
+    conexao.query(sql, (erro) => {
+        if (erro) {
+            return console.log(erro)
+        }
+
+        resposta.redirect('/')
+    })
+})
 
 app.post('/excluir', (requisicao, resposta) => {
     const id = requisicao.body.id
@@ -46,6 +62,7 @@ app.post('/completar', (requisicao, resposta) => {
         resposta.redirect('/')
     })
 })
+
 app.post('/descompletar', (requisicao, resposta) =>{
     const id = requisicao.body.id
 
@@ -128,7 +145,8 @@ app.get('/ativas', (requisicao, resposta) => {
 
         resposta.render('ativas', { tarefas, quantidadeTarefas })
 
-    })})
+    })
+})
 
 app.get('/', (requisicao, resposta) => {
     const sql = 'SELECT * FROM tarefas'
@@ -145,14 +163,15 @@ app.get('/', (requisicao, resposta) => {
                 completa: dado.completa === 0 ? false : true
             }
         })
+
         const tarefasAtivas = tarefas.filter((tarefa) =>{
             return tarefa.completa === false && tarefa
         })
 
         const quantidadeTarefasAtivas = tarefasAtivas.length
-
+        
+        resposta.render('home', {tarefas, quantidadeTarefasAtivas})
     })
-    resposta.render('home', {tarefas, quantidadeTarefasAtivas})
 })
 
 const conexao = mysql.createConnection({
@@ -172,4 +191,5 @@ conexao.connect((erro) => {
 
     app.listen(3000, () => {
         console.log("Servidor rodando na porta 3000!")
-    })})
+    })
+})
