@@ -9,12 +9,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Nunito+Sans:wght@300;600;800&family=Titillium+Web:wght@400;600;700&display=swap" rel="stylesheet">
     <title>ToDo App</title>
 </head>
-<body class="dark">
+<body>
     <header>
         <div>
             <div>
+                <button class="tema-button" onclick="alterarTema()">
                 <img src="/imagens/moon-icon.png" alt="Icone de lua">
-            </div>
+                </button>
             <form action="">
                 <input type="text" id="nova-tarefa" placeholder="Criar uma nova tarefa" name="novaTarefa">
                 <button type="submit">Criar</button>
@@ -22,5 +23,8 @@
         </div>
     </header>
     {{{body}}}
+
+    <script src="/js/script.js"></script>
+
 </body>
 </html>
